@@ -37,7 +37,6 @@ def getRouterOverviewAPIView(request):
         'api/token': 'method: POST',
         'api/token/refresh': 'method: POST',
     }
-    print(os.environ.get('EMAIL_HOST_USER'), os.environ.get('EMAIL_HOST_PASSWORD'))
     return Response(apiOverview)
 
 #--------------------------------API FOR USER DATA -----------------------------#
@@ -104,7 +103,7 @@ class VerifyEmailView(views.APIView):
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
-            return HttpResponseRedirect(redirect_to=f"{os.environ.get('FRONT_END_URL')}/login/?verified={True}")
+            return HttpResponseRedirect(redirect_to=f"{'https://todoapp-lkn.netlify.app'}/login/?verified={True}")
             # return Response({'email': 'Successfully activated'}, status=status.HTTP_200_OK)
 
         except jwt.ExpiredSignatureError as identifier:
@@ -119,10 +118,10 @@ class VerifyEmailView(views.APIView):
             data = {'email_body': email_body, 'email_subject': 'Reverify your email', 'email_to': user.email}
             Util.send_email(data)
 
-            return HttpResponseRedirect(redirect_to=f"{os.environ.get('FRONT_END_URL')}/login/?verified={False}")
+            return HttpResponseRedirect(redirect_to=f"{'https://todoapp-lkn.netlify.app'}/login/?verified={False}")
             # return Response({'error': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.exceptions.DecodeError as identifier:
-            return HttpResponseRedirect(redirect_to=f"{os.environ.get('FRONT_END_URL')}/login/?verified={'Error'}")
+            return HttpResponseRedirect(redirect_to=f"{'https://todoapp-lkn.netlify.app'}/login/?verified={'Error'}")
             # return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -155,13 +154,13 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
             id=smart_str(urlsafe_base64_decode((uidb64)))
             user = User.objects.get(id=id)
             if not PasswordResetTokenGenerator().check_token(user, token):
-                return HttpResponseRedirect(redirect_to=f"{os.environ.get('FRONT_END_URL')}/reset-password/?token-verified=INVALID")
+                return HttpResponseRedirect(redirect_to=f"{'https://todoapp-lkn.netlify.app'}/reset-password/?token-verified=INVALID")
                 # return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_401_UNAUTHORIZED)
-            return HttpResponseRedirect(redirect_to=f"{os.environ.get('FRONT_END_URL')}/reset-password/?uidb64={uidb64}&token={token}")
+            return HttpResponseRedirect(redirect_to=f"{'https://todoapp-lkn.netlify.app'}/reset-password/?uidb64={uidb64}&token={token}")
             # return Response({'success': True,  'message': 'Credentials valid', 'uidb64': uidb64, 'token': token}, status=status.HTTP_200_OK)
 
         except DjangoUnicodeDecodeError as identifier:
-            return HttpResponseRedirect(redirect_to=f"{os.environ.get('FRONT_END_URL')}/reset-password/?token-verified=INVALID")
+            return HttpResponseRedirect(redirect_to=f"{'https://todoapp-lkn.netlify.app'}/reset-password/?token-verified=INVALID")
             # return Response({"error":'Token is not valid, please request a new one'}, status=status.HTTP_401_UNAUTHORIZED)
 
     
