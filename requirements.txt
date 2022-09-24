@@ -6,3 +6,4 @@ whitenoise==6.2.0
 drf-yasg==1.21.3
 django-cors-headers==3.13.0
 django-dotenv
+djangorestframework-simplejwt
